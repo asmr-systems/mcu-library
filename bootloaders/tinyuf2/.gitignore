@@ -1,0 +1,7 @@
+/sdkconfig
+.settings/
+*.o
+*.d
+*.P
+_build/
+_bin/
