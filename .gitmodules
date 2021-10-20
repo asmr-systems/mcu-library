@@ -1,0 +1,6 @@
+[submodule "bootloaders/tinyuf2"]
+	path = bootloaders/tinyuf2
+	url = https://github.com/asmr-systems/tinyuf2.git
+[submodule "bootloaders/uf2-samdx1"]
+	path = bootloaders/uf2-samdx1
+	url = https://github.com/asmr-systems/uf2-samdx1.git
