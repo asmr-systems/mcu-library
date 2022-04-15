@@ -87,6 +87,7 @@ void DAC_Handler             ( void ) __attribute__ ((weak, alias("Dummy_Handler
 #endif
 void PTC_Handler             ( void ) __attribute__ ((weak, alias("Dummy_Handler")));
 
+
 /* Exception Table */
 __attribute__ ((section(".vectors")))
 const DeviceVectors exception_table = {
@@ -144,6 +145,13 @@ const DeviceVectors exception_table = {
         (void*) PTC_Handler             /* 18 Peripheral Touch Controller */
 };
 
+
+/* declare system initialization dummy function */
+void SystemInitDummy(void);
+
+/* declare system initialization function (weakly linked to dummy) */
+void SystemInit( void ) __attribute__ ((weak, alias("SystemInitDummy")));
+
 /**
  * \brief This is the code that gets called on processor reset.
  * To initialize the device, and call the main() routine.
@@ -187,6 +195,9 @@ void Reset_Handler(void)
         /* Initialize the C library */
         __libc_init_array();
 
+        /* initialize system */
+        SystemInit();
+
         /* Branch to main function */
         main();
 
@@ -201,4 +212,12 @@ void Dummy_Handler(void)
 {
         while (1) {
         }
+}
+
+/**
+ *  \brief Default dummy system initialization function. NOP.
+ */
+void SystemInitDummy(void) {
+    // nop
+    return;
 }
