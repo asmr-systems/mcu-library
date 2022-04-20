@@ -54,7 +54,10 @@ MEMORY
 }
 
 /* The stack size used by the application. NOTE: you need to adjust according to your application. */
-STACK_SIZE = DEFINED(STACK_SIZE) ? STACK_SIZE : DEFINED(__stack_size__) ? __stack_size__ : 0x400;
+STACK_SIZE = DEFINED(STACK_SIZE) ? STACK_SIZE : DEFINED(__stack_size__) ? __stack_size__ : 0x200;
+
+/*  Heap size ... IDK */
+HEAP_SIZE = DEFINED(HEAP_SIZE) ? HEAP_SIZE : DEFINED(__heap_size__) ? __heap_size__ : 0x200;
 
 /* Section Definitions */
 SECTIONS
@@ -150,6 +153,19 @@ SECTIONS
         . = . + STACK_SIZE;
         . = ALIGN(8);
         _estack = .;
+    } > ram
+
+    /* see https://ww1.microchip.com/downloads/en/DeviceDoc/Frequently-Asked-Questions-4.9.3.26.txt */
+    .heap :
+    {
+        . = ALIGN(4);
+        __end__ = .;
+        /* _heap_start = .; */
+        /* "end" is used by newlib's syscalls!!! */
+        PROVIDE(end = .);
+        PROVIDE(_heap_start = end );
+        . = . + HEAP_SIZE;
+        PROVIDE(_heap_end = .);
     } > ram
 
     . = ALIGN(4);
